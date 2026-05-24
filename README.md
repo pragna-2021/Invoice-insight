@@ -1,7 +1,8 @@
 # Invoice Insight
 
-Invoice Insight is an AI-powered invoice processing and analytics platform built using FastAPI, Tesseract OCR, OpenCV, and Bootstrap 5.  
-The system extracts structured data from invoice images/PDFs, supports multilingual OCR (English + Russian), stores invoice analytics in a database, and provides a dashboard for visualization and inspection.
+Invoice Insight is an AI-powered invoice processing and analytics platform built using FastAPI, Tesseract OCR, OpenCV, and Bootstrap 5.
+
+The system extracts structured data from invoice images and PDF files, supports multilingual OCR (English and Russian), stores invoice analytics in a database, and provides a dashboard for visualization, export, and inspection.
 
 ---
 
@@ -12,11 +13,10 @@ The system extracts structured data from invoice images/PDFs, supports multiling
 - OCR Extraction using Tesseract
 - Multi-language Support (English + Russian)
 - Automatic Translation (Russian → English)
-- Performance Analytics Dashboard
 - Structured Invoice Parsing
+- Analytics Dashboard
+- OCR Accuracy Tracking
 - Export Analytics as CSV/JSON
-- Modern Dark UI with Glassmorphism
-- Accuracy Tracking & Metrics
 
 ---
 
@@ -64,7 +64,7 @@ The system extracts structured data from invoice images/PDFs, supports multiling
 
 ## Database
 - SQLite (Development)
-- MySQL (Production)
+- MySQL / PostgreSQL (Production)
 
 ## Security
 - passlib (bcrypt)
@@ -78,31 +78,25 @@ The system extracts structured data from invoice images/PDFs, supports multiling
 invoice-insight/
 │
 ├── backend/
-│   ├── main.py
-│   ├── auth.py
-│   ├── security.py
-│   ├── database.py
-│   ├── models.py
-│   │
+│   ├── __pycache__/
 │   ├── routers/
-│   │   ├── auth.py
-│   │   ├── upload.py
-│   │   └── analytics.py
-│   │
-│   └── services/
-│       ├── ocr_engine.py
-│       ├── pdf_handler.py
-│       └── structurer.py
+│   ├── services/
+│   ├── tessdata/
+│
+├── docs/
+│   └── screenshots/
+│       ├── Analytics.png
+│       ├── Export.png
+│       ├── History.png
+│       ├── Login.png
+│       ├── Structure.png
+│       └── Upload.png
 │
 ├── frontend/
+│   ├── __pycache__/
+│   ├── pages/
 │   └── static/
-│       ├── index.html
-│       ├── css/
-│       │   └── style.css
-│       └── js/
-│           └── app.js
 │
-├── requirements.txt
 ├── start_backend.bat
 └── README.md
 ```
@@ -123,12 +117,14 @@ cd invoice-insight
 ## 2. Create Virtual Environment
 
 ### Windows
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
 ### Linux / macOS
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
@@ -147,11 +143,12 @@ pip install -r requirements.txt
 # Install Tesseract OCR
 
 ## Windows
-1. Download Tesseract OCR
-2. Install it
-3. Add Tesseract to PATH
+
+1. Download and install Tesseract OCR
+2. Add Tesseract to PATH
 
 Example:
+
 ```text
 C:\Program Files\Tesseract-OCR\
 ```
@@ -159,6 +156,7 @@ C:\Program Files\Tesseract-OCR\
 ---
 
 ## Linux
+
 ```bash
 sudo apt install tesseract-ocr
 ```
@@ -192,16 +190,19 @@ http://127.0.0.1:8000
 # Authentication Flow
 
 ## Register
+
 ```http
 POST /api/auth/register
 ```
 
 ## Login
+
 ```http
 POST /api/auth/login
 ```
 
-Returns:
+Response:
+
 ```json
 {
   "access_token": "jwt_token_here",
@@ -211,33 +212,33 @@ Returns:
 
 ---
 
-# Invoice Processing Flow
+# Invoice Processing Workflow
 
-1. User uploads invoice image/PDF
-2. PDF converted into images using PyMuPDF
-3. OpenCV preprocesses images
-4. Tesseract extracts text
-5. Language detection checks for Cyrillic text
-6. Russian text translated into English
-7. Structurer extracts:
-   - Vendor
+1. User uploads invoice image or PDF
+2. PDF files are converted into images using PyMuPDF
+3. OpenCV preprocesses the image
+4. Tesseract extracts text from the document
+5. Language detection checks for Cyrillic characters
+6. Russian text is translated into English
+7. Structured data is extracted:
+   - Vendor Name
    - Invoice Number
    - Date
    - Total Amount
    - Line Items
-8. Structured data stored in database
-9. Analytics generated from stored invoices
+8. Data is stored in the database
+9. Analytics and metrics are generated
 
 ---
 
 # Analytics Features
 
 - OCR Accuracy Tracking
+- Success / Failure Rate Analysis
 - Invoice Processing Metrics
-- Success / Failure Rates
 - Language Distribution
-- Export CSV / JSON Reports
-- Chart.js Visualizations
+- CSV / JSON Export
+- Interactive Charts using Chart.js
 
 ---
 
@@ -254,25 +255,29 @@ Returns:
 # OCR Engine Features
 
 ## Supported Languages
+
 - English (`eng`)
 - Russian (`rus`)
 
 ## OCR Pipeline
+
 - Grayscale conversion
-- Threshold preprocessing
-- Confidence score calculation
+- Image threshold preprocessing
+- OCR confidence score calculation
 - Translation support
 
 ---
 
 # Database Configuration
 
-Default:
+Default Database:
+
 ```python
 SQLite
 ```
 
-Production:
+Production Database Example:
+
 ```env
 DATABASE_URL=mysql+pymysql://user:password@localhost/dbname
 ```
@@ -297,55 +302,60 @@ DATABASE_URL=mysql+pymysql://user:password@localhost/dbname
 - Docker Compose Setup
 - Kubernetes Deployment
 - AI-based Invoice Classification
-- Multi-language Expansion
+- Additional Language Support
 - Email Invoice Parsing
 - Cloud Storage Integration
 
 ---
 
-# Screenshots
+# Application Screenshots
 
-Add screenshots here:
+## Login Page
 
-```text
-/docs/screenshots/dashboard.png
-/docs/screenshots/upload.png
-/docs/screenshots/analytics.png
-```
+<p align="center">
+  <img src="docs/screenshots/Login.png" width="900">
+</p>
 
 ---
 
-# Contributing
+## Upload Interface
 
-Pull requests are welcome.
-
-Steps:
-1. Fork the repository
-2. Create feature branch
-3. Commit changes
-4. Push branch
-5. Open Pull Request
+<p align="center">
+  <img src="docs/screenshots/Upload.png" width="900">
+</p>
 
 ---
 
-# License
+## Structured Invoice Output
 
-MIT License
-
----
-
-# Author
-
-Developed by Your Name
+<p align="center">
+  <img src="docs/screenshots/Structure.png" width="900">
+</p>
 
 ---
 
-# Support
+## Invoice History
 
-If you found this project useful:
-
-- Star the repository
-- Fork the project
-- Share feedback
+<p align="center">
+  <img src="docs/screenshots/History.png" width="900">
+</p>
 
 ---
+
+## Analytics Dashboard
+
+<p align="center">
+  <img src="docs/screenshots/Analytics.png" width="900">
+</p>
+
+---
+
+## Export Functionality
+
+<p align="center">
+  <img src="docs/screenshots/Export.png" width="900">
+</p>
+
+---
+
+
